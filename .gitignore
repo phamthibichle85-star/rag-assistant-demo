@@ -1,0 +1,14 @@
+# 向量数据库（本地生成，体积大）
+chroma_db/
+
+# Python 缓存
+__pycache__/
+*.pyc
+
+# 虚拟环境
+venv/
+.env
+
+# IDE
+.vscode/
+.idea/

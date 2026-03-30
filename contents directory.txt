@@ -1,0 +1,7 @@
+rag-assistant-demo/
+├── demo_notes/           # 公开演示笔记（taylor.md, python_basics.md, economics.md）
+├── app.py                # Streamlit 界面
+├── rag_core.py           # 核心检索逻辑（含分块优化、路径自动切换）
+├── requirements.txt      # 依赖列表
+├── .gitignore            # 忽略 chroma_db/ 等
+└── README.md             # 项目说明（融合商业版与技术说明）
