@@ -1,24 +1,84 @@
-# 🧠 企业级私有数据检索与生成管线 (RAG MVP)
+# 🧠 企业级私有数据检索与生成管线 · 演示版
+<img width="2710" height="1544" alt="e0acbb0345728d265b7a093317610bc9" src="https://github.com/user-attachments/assets/9d47f5f9-ea01-4d7b-93ab-db543c8ee800" />
+<img width="2707" height="1566" alt="5aa2f6a08ffc58703c3ea5da1e20b32f" src="https://github.com/user-attachments/assets/f0408fcf-54bb-4bb7-84dc-e5c76d1b90db" />
+<img width="2860" height="1566" alt="e00e7edeb96a61c244b75d22be8b15b5" src="https://github.com/user-attachments/assets/31c91738-6fb3-49e2-b2d6-d81e944428cb" />
+<img width="2880" height="1800" alt="d393356d76db91a049a86feef5441f2c" src="https://github.com/user-attachments/assets/553791b9-0ad2-4b7e-9645-4b4c1813cbac" />
 
-> **一句通俗解释**：用 AI 给企业的私有资产（合同、研报、SOP 培训文档）装上“超级大脑”。无需将机密数据上传至公共网络，员工只需用大白话提问，系统即可在海量无序的内部文档中精准检索原文，并生成总结报告，彻底消灭“找资料”的人力内耗。
+> **当前版本**：已完成本地语义检索与 Streamlit 界面演示。  
+> **下一步**：接入大模型生成回答，并部署公网在线体验。
 
-## 🎯 在线体验与演示 (Live Demo)
-👉 **[localhost:8501](这里放你未来部署的 Streamlit 链接)** *(演示版内置公开管理学与投资学语料，支持动态体验)*
+## 🎯 在线体验
+**暂未部署公网** – 您可在本地运行以下代码，亲自验证检索效果。
 
-## 💡 核心商业落地场景 (Business Scenarios)
-本项目拒绝“玩具级”对话，直击中小企业真实痛点：
-1. **新员工自动化 Onboarding**：将企业散乱的规章制度与操作手册转化为 QA 机器人，新人提问秒回原文出处，降低 50% 培训成本。
-2. **非结构化研报解析**：针对极长的行业研报或财务文档，通过大模型提取核心指标与摘要，辅助业务线快速决策。
-3. **数据隐私绝对隔离**：核心向量化检索（ChromaDB）均在本地/私有云完成，仅将脱敏 Chunk 提交给 LLM 引擎，兼顾大模型的高智商与企业数据的安全性。
 
-## 🛠 技术底座与工程流 (Tech Pipeline)
-- **数据管道**：多语言 MiniLM 向量化 + 动态语义切分策略（解决死板切分导致的上下文断裂）。
-- **向量引擎**：ChromaDB 本地高效检索引擎。
-- **大模型中枢**：接入 DeepSeek API 实现最终的归纳与生成（RAG 闭环）。
-- **前端交付**：Streamlit 轻量级 Web 应用，实现文档动态上传与实时交互。
+
+## 💡 核心价值
+- **数据隐私绝对隔离**：所有向量化与检索均在本地完成（ChromaDB），敏感数据永不离开您的设备。
+- **语义分块策略**：优先按段落切分，保证检索片段完整；长段自动硬切，兼顾精度与上下文。
+- **即开即用的演示笔记**：内置管理学、Python、经济学公开语料，方便快速测试。
+
+## 🛠 技术底座（当前实现）
+| 模块 | 技术选型 |
+|------|----------|
+| 前端界面 | Streamlit |
+| 向量数据库 | ChromaDB（本地持久化） |
+| 文本嵌入 | `paraphrase-multilingual-MiniLM-L12-v2`（多语言支持） |
+| 分块策略 | 段落优先 + 长段硬切（`CHUNK_SIZE=800`） |
+| 隐私保障 | 无任何数据上传，向量库本地存储 |
+
+## 🚀 快速开始（本地运行）
+
+1. **克隆仓库**
+   ```bash
+   git clone https://github.com/你的用户名/rag-assistant-demo.git
+   cd rag-assistant-demo
+   ```
+
+2. **安装依赖**
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+3. **启动应用**
+   ```bash
+   streamlit run app.py
+   ```
+
+4. 浏览器自动打开 `http://localhost:8501`，输入问题即可检索演示笔记。
+
+*首次运行会自动下载约 420MB 的 Embedding 模型，并索引 `demo_notes` 中的笔记，请耐心等待。*
+
+## 📁 项目结构
+```
+rag-assistant-demo/
+├── demo_notes/          # 公开演示笔记（管理学、Python、经济学）
+├── app.py               # Streamlit 界面
+├── rag_core.py          # 核心检索逻辑（分块、向量化、查询）
+├── requirements.txt     # 依赖列表
+├── .gitignore           # 忽略向量库等本地文件
+└── README.md            # 项目说明
+```
+
+## 🔒 隐私与安全
+- 向量数据仅存储在项目下的 `chroma_db` 文件夹，**永不传输至任何云端**。
+- 演示笔记全部为公开知识，无任何个人隐私。
+- 若需处理真实敏感文档，请替换 `demo_notes` 中的内容并在本地运行。
+
+## 📈 开发路线图
+- [x] 本地 Markdown 笔记检索（当前）
+- [ ] 接入 DeepSeek API，实现检索增强生成（RAG 闭环）
+- [ ] 支持动态文件上传（用户即时上传自己的文档）
+- [ ] 部署至 Streamlit Cloud，提供公网演示链接
 
 ## 👨‍💻 关于开发者
-- **定位**：拥有商科/投资学底子 + AI 自动化落地能力的准产品人。
-- **资质**：阿里云达摩院高级人工智能训练师、科大讯飞/Datawhale联合认证微调/智能体工程师。
-- **能力核心**：熟练运用 LLM API 与 Python 胶水语言，擅长将企业中低效的非结构化业务转化为标准的自动化工作流。
+- **定位**：投资学背景 + AI 应用开发能力的准产品人。
+- **能力**：熟练运用 Python、LLM API、向量数据库，擅长将业务问题转化为自动化工具。
+- **认证**：阿里云达摩院高级人工智能训练师、科大讯飞/Datawhale联合认证微调/智能体工程师。
 - 📩 联系方式：zhy52111@qq.com
+
+## 📄 许可证
+MIT
+```
+
+---
+
